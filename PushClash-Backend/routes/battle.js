@@ -46,7 +46,7 @@ router.post('/battle', async (req, res) => {
     });
     
   } catch (error) {
-    //console.error('Battle error:', error);
+    console.error('Battle error:', error);
     res.status(500).json({ 
       error: "Failed to generate battle results",
       message: error.message

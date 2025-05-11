@@ -34,7 +34,7 @@ router.post('/roast', async (req, res) => {
     });
     
   } catch (error) {
-    //console.error('Roast error:', error);
+    console.error('Roast error:', error);
     res.status(500).json({ 
       error: "Failed to generate roast",
       message: error.message

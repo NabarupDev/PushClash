@@ -94,7 +94,7 @@ router.post('/portfolio/icon', async (req, res) => {
     });
     
   } catch (error) {
-    //console.error('❌ Error fetching favicon:', error);
+    console.error('❌ Error fetching favicon:', error);
     res.status(500).json({ 
       success: false,
       error: "Failed to get website icon",
@@ -128,7 +128,7 @@ router.post('/portfolio/roast', async (req, res) => {
     });
     
   } catch (error) {
-    //console.error('❌ Error generating portfolio roast:', error);
+    console.error('❌ Error generating portfolio roast:', error);
     res.status(500).json({ 
       success: false,
       error: "Failed to generate portfolio roast",
@@ -471,7 +471,7 @@ router.post('/scrape', async (req, res) => {
     // Send the response
     res.json(responseData);
   } catch (error) {
-    //console.error('❌ Error scraping website:', error);
+    console.error('❌ Error scraping website:', error);
     
     // Log the error response
     const errorResponse = {

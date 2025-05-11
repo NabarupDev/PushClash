@@ -50,7 +50,7 @@ async function generateBattleWithGemini(user1Data, user2Data) {
     //console.log("Gemini response:", response);
     return response.text();
   } catch (error) {
-    //console.error("Error generating battle with Gemini:", error);
+    console.error("Error generating battle with Gemini:", error);
     throw new Error("Failed to generate battle results");
   }
 }
@@ -91,7 +91,7 @@ async function generateRoastWithGemini(userData) {
     //console.log("Gemini roast response:", response);
     return response.text();
   } catch (error) {
-    //console.error("Error generating roast with Gemini:", error);
+    console.error("Error generating roast with Gemini:", error);
     throw new Error("Failed to generate roast results");
   }
 }
@@ -174,7 +174,7 @@ async function generatePortfolioRoastWithGemini(url, scrapeData) {
     //console.log("Gemini portfolio roast response generated");
     return response.text();
   } catch (error) {
-    //console.error("Error generating portfolio roast with Gemini:", error);
+    console.error("Error generating portfolio roast with Gemini:", error);
     throw new Error("Failed to generate portfolio roast results");
   }
 }

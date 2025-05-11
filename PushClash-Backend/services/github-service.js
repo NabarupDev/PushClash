@@ -12,7 +12,7 @@ async function getUserProfile(username) {
     const response = await axios.get(`https://api.github.com/users/${username}`, { headers });
     return response.data;
   } catch (err) {
-    //console.error('Error fetching user profile:', err.response?.data?.message || err.message);
+    console.error('Error fetching user profile:', err.response?.data?.message || err.message);
     throw err;
   }
 }
@@ -23,7 +23,7 @@ async function getUserProfileImage(username) {
     const profile = await getUserProfile(username);
     return profile.avatar_url;
   } catch (err) {
-    //console.error('Error fetching user profile image:', err.message);
+    console.error('Error fetching user profile image:', err.message);
     throw err;
   }
 }
@@ -38,7 +38,7 @@ async function getUserRepos(username) {
     );
     return response.data;
   } catch (err) {
-    //console.error('Error fetching user repos:', err.response?.data?.message);
+    console.error('Error fetching user repos:', err.response?.data?.message);
     return [];
   }
 }
@@ -52,7 +52,7 @@ async function getRepoLanguages(username, repoName) {
     );
     return response.data;
   } catch (err) {
-    //console.error(`Error fetching languages for ${repoName}:`, err.response?.data?.message);
+    console.error(`Error fetching languages for ${repoName}:`, err.response?.data?.message);
     return {};
   }
 }
@@ -65,7 +65,7 @@ async function getRepoReadme(username, repoName) {
     });
     return cleanReadmeText(response.data);
   } catch (err) {
-    //console.error(`No README in ${repoName}:`, err.response?.data?.message);
+    console.error(`No README in ${repoName}:`, err.response?.data?.message);
     return null;
   }
 }
