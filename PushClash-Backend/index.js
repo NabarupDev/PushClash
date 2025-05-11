@@ -19,6 +19,10 @@ app.use('/api', battleRoutes);
 app.use('/api', roastRoutes);
 app.use('/api', portfolioRoutes);
 
+app.get('/', (req, res) => {
+  res.send('PushClash backend is working!');
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
