@@ -153,7 +153,8 @@ router.post('/scrape', async (req, res) => {
     // Launch puppeteer
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: process.env.CHROMIUM_PATH || puppeteer.executablePath() // Use custom path if provided
     });
         
     const page = await browser.newPage();
