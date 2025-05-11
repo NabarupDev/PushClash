@@ -30,7 +30,7 @@ const Battle = () => {
 
         setIsLoading(true);
         try {
-            const apiBaseUrl = import.meta.env.PROFILE_IMAGE_API_BASE_URL || 'http://localhost:3000';
+            const apiBaseUrl = import.meta.env.PROFILE_IMAGE_API_BASE_URL || 'https://pushclash.onrender.com';
             const response = await fetch(`${apiBaseUrl}/github/profile-image/${username}`);
 
             if (response.ok) {
@@ -57,7 +57,7 @@ const Battle = () => {
         setBattleResults(null);
 
         try {
-            const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'http://localhost:3000';
+            const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'https://pushclash.onrender.com';
             
             const response = await fetch(`${apiBaseUrl}/api/battle`, {
                 method: 'POST',

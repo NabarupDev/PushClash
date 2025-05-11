@@ -67,7 +67,7 @@ const Portfolio = () => {
         return;
       }
 
-      const apiBaseUrl = import.meta.env.PROFILE_IMAGE_API_BASE_URL || 'http://localhost:3000';
+      const apiBaseUrl = import.meta.env.PROFILE_IMAGE_API_BASE_URL || 'https://pushclash.onrender.com';
 
       // Fetch website icon
       const response = await fetch(`${apiBaseUrl}/api/portfolio/icon`, {
@@ -107,7 +107,7 @@ const Portfolio = () => {
     setPortfolioResults(null);
 
     try {
-      const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'http://localhost:3000';
+      const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'https://pushclash.onrender.com';
       
       setLoadingMessage("Analyzing website content...");
       const scrapeResponse = await fetch(`${apiBaseUrl}/api/scrape`, {

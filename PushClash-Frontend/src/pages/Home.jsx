@@ -7,6 +7,21 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Ping the server to wake it up on page load
+    const pingServer = async () => {
+      try {
+        await fetch("https://pushclash.onrender.com/api/wake", {
+          method: "GET",
+        });
+        //console.log("Server pinged on page load");
+      } catch (error) {
+        //console.error("Error pinging server:", error);
+      }
+    };
+
+    // Call the ping function
+    pingServer();
+    
     // Simulate loading time and handle page content loading
     const handleLoad = () => {
       // Add a small delay to ensure smooth transition
