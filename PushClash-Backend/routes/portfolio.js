@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const { generatePortfolioRoastWithGemini } = require('../services/ai-service');
+
+puppeteer.use(StealthPlugin());
 
 // Portfolio analysis for a GitHub user
 router.post('/portfolio', async (req, res) => {
@@ -154,7 +157,7 @@ router.post('/scrape', async (req, res) => {
     const browser = await puppeteer.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      executablePath: process.env.CHROMIUM_PATH || puppeteer.executablePath() // Use custom path if provided
+      executablePath: process.env.CHROMIUM_PATH || puppeteer.executablePath() // Use bundled Chromium
     });
         
     const page = await browser.newPage();
