@@ -23,6 +23,10 @@ app.get('/', (req, res) => {
   res.send('PushClash backend is working!');
 });
 
+app.get('/api/wake', (req, res) => {
+  res.status(200).json({ status: 'Server is awake' });
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
