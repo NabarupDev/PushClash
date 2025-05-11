@@ -74,7 +74,7 @@ https://github.com/user-attachments/assets/bcb93aeb-ef83-4450-bed6-1b4e4ffaf4bb
 - **AI Integration**: Google Generative AI (Gemini)
 - **Web Scraping**: Puppeteer
 - **API Integration**: GitHub API
-- **Deployment**: Railway/Render
+- **Deployment**: Render
 
 ## 🏗 Architecture
 
