@@ -179,8 +179,117 @@ async function generatePortfolioRoastWithGemini(url, scrapeData) {
   }
 }
 
+async function generateLeetcodeRoastWithGemini(leetcodeData) {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    
+    // Check if the data indicates user doesn't exist
+    if (leetcodeData.errors && 
+        leetcodeData.errors.some(err => err.message === "That user does not exist.") &&
+        leetcodeData.data.matchedUser === null) {
+      return "No data found, user does not exist. I can't roast what isn't there! 👻";
+    }
+    
+    const prompt = `
+    You need to behave as a professional roaster reviewing a LeetCode user.
+    
+    LeetCode User: ${leetcodeData.username}
+    - Total Solved Problems: ${leetcodeData.totalSolved || 0}
+    - Easy Problems: ${leetcodeData.easySolved || 0}/${leetcodeData.totalEasy || 0}
+    - Medium Problems: ${leetcodeData.mediumSolved || 0}/${leetcodeData.totalMedium || 0}
+    - Hard Problems: ${leetcodeData.hardSolved || 0}/${leetcodeData.totalHard || 0}
+    - Acceptance Rate: ${leetcodeData.acceptanceRate || 'N/A'}
+    - Contest Rating: ${leetcodeData.rating || 'N/A'}
+    - Contest Ranking: ${leetcodeData.ranking || 'N/A'}
+    - Badges: ${leetcodeData.badges ? JSON.stringify(leetcodeData.badges) : 'None'}
+    - Submissions in Past Year: ${leetcodeData.submissionCalendar ? 'Available' : 'Not available'}
+    
+    Roast this LeetCode profile mercilessly. Be creative, harsh, and funny. Point out weaknesses in their solving patterns, problem selection, consistency, or any other aspects you can infer.
+    
+    For example, if they've solved mostly easy problems and few medium/hard ones, mock them for avoiding challenges. If they have a low acceptance rate, tease them about submitting without thinking. If they've solved many problems but have a poor rating, joke about quantity over quality.
+    
+    Use strong language, be sarcastic, include pop culture references, and don't hold back. Include appropriate emojis to emphasize your points.
+    
+    Your response should be direct as if you're talking to them. Don't include any meta-text or labels.
+    
+    Keep your response medium length - not too short, not too long. Make sure the roast is humorous but brutal.
+    
+    Your entire response will be passed directly to a frontend, so only include the roast text.
+    `;
+    
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    return response.text();
+  } catch (error) {
+    console.error("Error generating LeetCode roast with Gemini:", error);
+    throw new Error("Failed to generate LeetCode roast results");
+  }
+}
+
+async function generateLeetcodeBattleWithGemini(user1Data, user2Data) {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    
+    // Check if either user doesn't exist
+    if ((user1Data.errors && 
+         user1Data.errors.some(err => err.message === "That user does not exist.") &&
+         user1Data.data.matchedUser === null) ||
+        (user2Data.errors && 
+         user2Data.errors.some(err => err.message === "That user does not exist.") &&
+         user2Data.data.matchedUser === null)) {
+      return "One or both users don't exist on LeetCode. I can't compare what isn't there! 👻";
+    }
+    
+    // Craft a detailed prompt for Gemini
+    const prompt = `
+    You need to behave as an evaluator comparing two LeetCode users. 
+    
+    User 1: ${user1Data.username}
+    - Total Solved Problems: ${user1Data.totalSolved || 0}
+    - Easy Problems: ${user1Data.easySolved || 0}/${user1Data.totalEasy || 0}
+    - Medium Problems: ${user1Data.mediumSolved || 0}/${user1Data.totalMedium || 0}
+    - Hard Problems: ${user1Data.hardSolved || 0}/${user1Data.totalHard || 0}
+    - Acceptance Rate: ${user1Data.acceptanceRate || 'N/A'}
+    - Contest Rating: ${user1Data.rating || 'N/A'}
+    - Contest Ranking: ${user1Data.ranking || 'N/A'}
+    
+    User 2: ${user2Data.username}
+    - Total Solved Problems: ${user2Data.totalSolved || 0}
+    - Easy Problems: ${user2Data.easySolved || 0}/${user2Data.totalEasy || 0}
+    - Medium Problems: ${user2Data.mediumSolved || 0}/${user2Data.totalMedium || 0}
+    - Hard Problems: ${user2Data.hardSolved || 0}/${user2Data.totalHard || 0}
+    - Acceptance Rate: ${user2Data.acceptanceRate || 'N/A'}
+    - Contest Rating: ${user2Data.rating || 'N/A'}
+    - Contest Ranking: ${user2Data.ranking || 'N/A'}
+    
+    Evaluate both user profiles. For the user with the weaker profile, roast them harshly and make jokes about them - use strong language if needed. For the user with the better profile, praise them enthusiastically. If both profiles are roughly equal, praise both users.
+    
+    Compare them based on:
+    1. Overall problem-solving skills (total problems solved)
+    2. Problem difficulty balance (ratio of easy/medium/hard problems)
+    3. Contest performance (rating and ranking)
+    4. Code quality (acceptance rate)
+    
+    Include emojis in your response. Your response should be direct as if you're talking to them. Don't include any meta-text or labels.
+    
+    Keep your response medium length - not too short, not too long. Make sure to heavily criticize the weaker profile in a humorous way.
+    
+    Your entire response will be passed directly to a frontend, so only include the evaluation text.
+    `;
+    
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    return response.text();
+  } catch (error) {
+    console.error("Error generating LeetCode battle with Gemini:", error);
+    throw new Error("Failed to generate LeetCode battle results");
+  }
+}
+
 module.exports = {
   generateBattleWithGemini,
   generateRoastWithGemini,
-  generatePortfolioRoastWithGemini
+  generatePortfolioRoastWithGemini,
+  generateLeetcodeRoastWithGemini,
+  generateLeetcodeBattleWithGemini
 };

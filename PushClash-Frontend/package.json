@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fix-deps": "rmdir /s /q node_modules && del package-lock.json && npm cache clean --force && npm install"
   },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.13.5",

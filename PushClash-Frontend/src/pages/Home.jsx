@@ -96,9 +96,9 @@ const Home = () => {
               </span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-6 sm:mb-8 max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl">
-              The ultimate tool to analyze, compare, and playfully roast GitHub profiles and portfolios
+              The ultimate tool to analyze, compare, and playfully roast GitHub profiles, LeetCode profiles, and portfolios
             </p>
-            <div className="flex flex-row justify-center gap-3 sm:gap-4">
+            <div className="flex flex-row flex-wrap justify-center gap-3 sm:gap-4">
               <Link to="/roast" className="inline-flex items-center justify-center whitespace-nowrap bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold py-2.5 sm:py-3 px-5 sm:px-6 rounded-md shadow-md hover:shadow-lg transition-all duration-300 text-sm sm:text-base">
                 <span>Roast a Profile</span>
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-1.5 sm:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -180,6 +180,46 @@ const Home = () => {
               </p>
               <Link to="/portfolio" className="text-green-400 font-medium hover:text-green-300 flex items-center text-sm sm:text-base">
                 Analyze Your Portfolio
+                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+
+            {/* Add a new card for LeetCode */}
+            <div className="bg-gray-900 border border-blue-500/30 rounded-xl p-4 sm:p-5 md:p-6 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
+              <div className="rounded-full bg-blue-500/20 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center mb-4 sm:mb-5 md:mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16.5 9.39997L12.5 13.4L10.5 11.4L8.5 13.4L12.5 17.4L18.5 11.4L16.5 9.39997Z" />
+                  <path d="M19.14 3.50997C16.9 1.26997 13.07 1.26997 10.83 3.50997L3.6 10.74C2.4 11.94 2.16 13.77 3.03 15.18L2.32 15.89C1.54 16.67 1.54 17.94 2.32 18.72C3.1 19.5 4.37 19.5 5.15 18.72L5.86 18.01C7.27 18.88 9.1 18.64 10.3 17.44L17.54 10.21C19.78 7.97997 19.78 4.14997 17.54 1.90997L19.14 3.50997ZM14.42 7.09997L11.17 10.35C10.78 10.74 10.78 11.37 11.17 11.77C11.56 12.16 12.19 12.16 12.58 11.77L15.83 8.51997C16.23 8.12997 16.22 7.49997 15.83 7.09997C15.44 6.71997 14.81 6.70997 14.42 7.09997Z" />
+                </svg>
+              </div>
+              <h3 className="text-lg sm:text-xl md:text-xl font-bold mb-2 sm:mb-3 text-blue-400">LeetCode Profile Analysis</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-5 md:mb-6">
+                How good are your coding skills? Get a humorous roast of your LeetCode profile based on problem-solving stats and skill levels.
+              </p>
+              <Link to="/leetcode" className="text-blue-400 font-medium hover:text-blue-300 flex items-center text-sm sm:text-base">
+                Check Your LeetCode Profile
+                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+
+            {/* LeetCode Battle card */}
+            <div className="bg-gray-900 border border-cyan-500/30 rounded-xl p-4 sm:p-5 md:p-6 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300">
+              <div className="rounded-full bg-cyan-500/20 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center mb-4 sm:mb-5 md:mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-cyan-500" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.0002 7H17.0002V5C17.0002 4.45 16.5502 4 16.0002 4H12.0002C11.4502 4 11.0002 4.45 11.0002 5V7H9.00016C7.90016 7 7.00016 7.9 7.00016 9V11C7.00016 11.55 7.45016 12 8.00016 12H12.0002C12.5502 12 13.0002 11.55 13.0002 11V9H15.0002V11C15.0002 11.55 15.4502 12 16.0002 12H20.0002C20.5502 12 21.0002 11.55 21.0002 11V9C21.0002 7.9 20.1002 7 19.0002 7Z" />
+                  <path d="M5 13H3C1.9 13 1 13.9 1 15V17C1 17.55 1.45 18 2 18H6C6.55 18 7 17.55 7 17V15H9V17C9 17.55 9.45 18 10 18H14C14.55 18 15 17.55 15 17V15C15 13.9 14.1 13 13 13H11V11H13C14.1 11 15 10.1 15 9V7C15 6.45 14.55 6 14 6H10C9.45 6 9 6.45 9 7V9H7V7C7 6.45 6.55 6 6 6H2C1.45 6 1 6.45 1 7V9C1 10.1 1.9 11 3 11H5V13Z" />
+                </svg>
+              </div>
+              <h3 className="text-lg sm:text-xl md:text-xl font-bold mb-2 sm:mb-3 text-cyan-400">LeetCode Battle</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-5 md:mb-6">
+                Compare coding skills in a head-to-head LeetCode battle! See who has solved more problems and who has the better ranking.
+              </p>
+              <Link to="/leetcode-battle" className="text-cyan-400 font-medium hover:text-cyan-300 flex items-center text-sm sm:text-base">
+                Battle LeetCode Profiles
                 <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -269,6 +309,12 @@ const Home = () => {
             </Link>
             <Link to="/portfolio" className="inline-flex items-center justify-center whitespace-nowrap bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-5 rounded-md shadow-md hover:shadow-lg transition-all duration-300 text-sm sm:text-base w-auto">
               <span>Analyze Portfolio</span>
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-1.5 sm:ml-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
+            <Link to="/leetcode-battle" className="inline-flex items-center justify-center whitespace-nowrap bg-gradient-to-r from-cyan-600 to-orange-600 hover:from-cyan-700 hover:to-orange-700 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-5 rounded-md shadow-md hover:shadow-lg transition-all duration-300 text-sm sm:text-base w-auto">
+              <span>LeetCode Battle</span>
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-1.5 sm:ml-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
