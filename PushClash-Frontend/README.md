@@ -1,19 +1,21 @@
-# PushClash - GitHub Profile & Portfolio Analyzer
+# PushClash - GitHub & LeetCode Profile Analyzer
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/076dd881-070c-47d3-9bb4-1340418bd5f9" alt="PushClash Logo" width="200" />
   <br />
-  <h3>The ultimate tool for analyzing and roasting GitHub profiles and portfolios</h3>
+  <h3>The ultimate tool for analyzing and roasting GitHub profiles, LeetCode profiles, and portfolios</h3>
   <p>Built with React, Node.js, TailwindCSS, and Gemini AI</p>
 </div>
 
-PushClash is an interactive web application that helps developers analyze GitHub profiles, compare users head-to-head, and receive insightful feedback on portfolio websites - all with a twist of humor and roasting.
+PushClash is an interactive web application that helps developers analyze GitHub profiles, LeetCode profiles, compare users head-to-head, and receive insightful feedback on portfolio websites - all with a twist of humor and roasting.
 
 ## 📌 Project Overview
 
 PushClash provides developers with a fun and engaging way to:
 - Get humorous yet insightful analysis of GitHub profiles and coding habits
 - Compare two GitHub profiles in a "battle" to see who comes out on top
+- Analyze and roast LeetCode profiles based on problem-solving stats
+- Compare two LeetCode profiles to determine the superior coder
 - Analyze portfolio websites for design, content, and user experience
 
 The platform uses AI to generate personalized roasts and insights while maintaining a playful tone that makes the feedback engaging and entertaining.
@@ -30,6 +32,18 @@ The platform uses AI to generate personalized roasts and insights while maintain
 - AI-generated analysis of both profiles
 - Determine the winner based on multiple factors
 - Humorous commentary on the comparison
+
+### 🧠 LeetCode Profile Roasting
+- Enter any LeetCode username
+- Get a humorous analysis of problem-solving stats and skill levels
+- Review of easy, medium, and hard problems solved
+- Ranking analysis with personalized feedback
+
+### 🏆 LeetCode Battle
+- Compare two LeetCode users in a coding showdown
+- Side-by-side comparison of problem counts and rankings
+- AI-generated analysis of who's the superior problem solver
+- Entertaining commentary on coding skills and patterns
 
 ### 🎨 Portfolio Website Analysis
 - Enter the URL of any portfolio website
@@ -49,6 +63,7 @@ The platform uses AI to generate personalized roasts and insights while maintain
 - **Backend:** 
   - Node.js/Express (in the same repository under different folder)
   - GitHub API integration
+  - LeetCode scraping and analysis
   - AI-powered analysis
 
 ## 🚀 Installation & Setup
@@ -99,6 +114,12 @@ https://github.com/user-attachments/assets/7f654675-1102-4ee3-bc9c-4a15fc2fe57e
 
 ### GitHub Battle
 https://github.com/user-attachments/assets/deee9174-7a0b-4138-8655-bfe0ef0a7477
+
+### LeetCode Roast
+https://github.com/user-attachments/assets/leetcode-roast-preview
+
+### LeetCode Battle
+https://github.com/user-attachments/assets/leetcode-battle-preview
 
 ### Portfolio Analysis
 https://github.com/user-attachments/assets/bcb93aeb-ef83-4450-bed6-1b4e4ffaf4bb
