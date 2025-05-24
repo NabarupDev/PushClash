@@ -1,6 +1,6 @@
-# GitHub Roaster - Backend
+# PushClash - Backend
 
-A Node.js backend service that powers the GitHub Roaster application, allowing users to generate humorous roasts of GitHub profiles, create battles between users, and analyze portfolio websites.
+A Node.js backend service that powers the GitHub Roaster application, allowing users to generate humorous roasts of GitHub profiles, create battles between users, analyze portfolio websites, and compare LeetCode profiles.
 
 ## Features
 
@@ -8,6 +8,7 @@ A Node.js backend service that powers the GitHub Roaster application, allowing u
 - **Developer Battle**: Pits two GitHub users against each other for a comedic comparison
 - **Portfolio Analysis**: Evaluates and roasts personal portfolio websites
 - **Website Scraping**: Analyzes technical aspects of websites including SEO, accessibility, and performance
+- **LeetCode Profile Analysis**: Generates roasts and comparisons of LeetCode profiles
 
 ## Technology Stack
 
@@ -15,7 +16,7 @@ A Node.js backend service that powers the GitHub Roaster application, allowing u
 - **Framework**: Express.js
 - **AI Integration**: Google Generative AI (Gemini)
 - **Web Scraping**: Puppeteer
-- **API Integration**: GitHub API
+- **API Integration**: GitHub API, LeetCode API
 
 ## Getting Started
 
@@ -74,7 +75,7 @@ Returns detailed user profile information and repository data.
 
 ### Roast Endpoints
 
-#### Generate User Roast
+#### Generate GitHub User Roast
 ```
 POST /api/roast
 ```
@@ -87,9 +88,22 @@ Generates an AI-powered roast for a GitHub user.
 }
 ```
 
+#### Generate LeetCode User Roast
+```
+POST /api/leetcode-roast
+```
+Generates an AI-powered roast based on a user's LeetCode profile.
+
+**Request Body:**
+```json
+{
+  "username": "leetcodeUsername"
+}
+```
+
 ### Battle Endpoints
 
-#### Generate User Battle
+#### Generate GitHub User Battle
 ```
 POST /api/battle
 ```
@@ -100,6 +114,20 @@ Compares two GitHub users and generates a humorous battle analysis.
 {
   "username1": "firstGithubUsername",
   "username2": "secondGithubUsername"
+}
+```
+
+#### Generate LeetCode User Battle
+```
+POST /api/leetcode-battle
+```
+Compares two LeetCode users and generates a humorous battle analysis based on their coding statistics.
+
+**Request Body:**
+```json
+{
+  "username1": "firstLeetCodeUsername",
+  "username2": "secondLeetCodeUsername"
 }
 ```
 
@@ -172,6 +200,10 @@ The application uses Google's Gemini API to generate creative content. The imple
 ### GitHub API Integration
 
 GitHub API calls are handled through dedicated service functions in `services/github-service.js`.
+
+### LeetCode Integration
+
+LeetCode profile data is fetched from a third-party API and processed to generate insightful and humorous roasts and comparisons.
 
 ### Web Scraping
 
