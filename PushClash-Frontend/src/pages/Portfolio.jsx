@@ -107,7 +107,7 @@ const Portfolio = () => {
     setPortfolioResults(null);
 
     try {
-      const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'http://localhost:3000';
+      const apiBaseUrl = import.meta.env.VITE_ROAST_BASE_URL || 'http://localhost:3000';
       
       setLoadingMessage("Analyzing website content...");
       const scrapeResponse = await fetch(`${apiBaseUrl}/api/scrape`, {

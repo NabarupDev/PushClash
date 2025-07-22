@@ -27,7 +27,7 @@ const Roast = () => {
 
     setIsLoading(true);
     try {
-      const apiBaseUrl = import.meta.env.PROFILE_IMAGE_API_BASE_URL || 'http://localhost:3000';
+      const apiBaseUrl = import.meta.env.VITE_ROAST_BASE_URL || 'http://localhost:3000';
       const response = await fetch(`${apiBaseUrl}/github/profile-image/${username}`);
 
       if (response.ok) {
@@ -54,8 +54,8 @@ const Roast = () => {
     setRoastResults(null);
 
     try {
-      const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'http://localhost:3000';
-      
+      const apiBaseUrl = import.meta.env.VITE_ROAST_BASE_URL || 'http://localhost:3000';
+
       const response = await fetch(`${apiBaseUrl}/api/roast`, {
         method: 'POST',
         headers: {
@@ -71,7 +71,7 @@ const Roast = () => {
       const data = await response.json();
       //console.log('Roast API Response:', data); // Log the entire response
       setRoastResults(data);
-      
+
       if (data.user && data.user.avatarUrl) {
         setProfileImage(data.user.avatarUrl);
       }
@@ -86,12 +86,12 @@ const Roast = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!username.trim()) {
       toast.error("Please enter a username");
       return;
     }
-    
+
     fetchProfileImage(username);
     startRoasting();
   };
@@ -137,8 +137,8 @@ const Roast = () => {
                     className="w-full bg-transparent outline-none text-white placeholder-gray-400 focus:placeholder-red-300 transition-colors text-xs sm:text-sm md:text-base"
                   />
                   {username && (
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setUsername('')}
                       className="ml-1 sm:ml-2 text-gray-400 hover:text-red-400 transition-colors"
                     >
@@ -172,18 +172,18 @@ const Roast = () => {
           {!roastResults && !isRoasting && (
             <div className="flex justify-center">
               <div className="w-36 h-36 sm:w-48 sm:h-48 md:w-[200px] md:h-[200px] overflow-hidden rounded-lg">
-                <img 
-                  src={loadingGif} 
-                  alt="GitHub Roast Preview" 
+                <img
+                  src={loadingGif}
+                  alt="GitHub Roast Preview"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
               </div>
             </div>
           )}
-          
+
           {roastResults && (
-            <div 
+            <div
               ref={resultsRef}
               className="border-2 border-yellow-500/30 rounded-lg p-3 sm:p-4 bg-gray-900/50 shadow-xl animate-fadeIn max-w-3xl mx-auto"
             >
@@ -199,7 +199,7 @@ const Roast = () => {
                   onInit={(typewriter) => {
                     const roastText = roastResults.roastResult || "No roast content available";
                     const processedText = roastText.replace(/\*(.*?)\*/g, '$1');
-                    
+
                     typewriter.typeString(processedText)
                       .callFunction(() => {
                         //console.log('Roast results typing completed');

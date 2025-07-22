@@ -128,7 +128,7 @@ const Navbar = () => {
                   >
                     <div className="py-1">
                       <NavLink 
-                        to="/leetcode-roast" 
+                        to="/leetcode" 
                         className={({ isActive }) => 
                           isActive ? "text-white block px-4 py-2 text-sm font-medium" : "text-gray-300 hover:bg-gray-600 hover:text-white block px-4 py-2 text-sm font-medium"
                         }
@@ -237,7 +237,7 @@ const Navbar = () => {
               </button>
               <div className={`pl-4 ${leetcodeDropdown ? 'block' : 'hidden'} space-y-1 pt-1`}>
                 <NavLink 
-                  to="/leetcode-roast"
+                  to="/leetcode"
                   onClick={toggleMenu} 
                   className={({ isActive }) => 
                     isActive ? "text-white block px-3 py-2 rounded-md textbase font-medium" : "text-gray-300 hover:text-white block px-3 py-2 rounded-md textbase font-medium"
