@@ -32,7 +32,7 @@ const LeetCode = () => {
     setRoastResults(null);
 
     try {
-      const apiBaseUrl = import.meta.env.VITE_ROAST_BASE_URL || 'https://pushclash.onrender.com';
+      const apiBaseUrl = import.meta.env.VITE_ROAST_BASE_URL || 'http://localhost:3000';
       
       console.log('Using API URL:', apiBaseUrl); // For debugging
       
@@ -115,6 +115,12 @@ const LeetCode = () => {
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="LeetCode username 🧠"
                   className="w-full bg-transparent outline-none text-white placeholder-gray-400 focus:placeholder-blue-300 transition-colors text-xs sm:text-sm md:text-base"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleSubmit(e);
+                    }
+                  }}
                 />
                 {username && (
                   <button 

@@ -3,6 +3,10 @@ const router = express.Router();
 const { generateBattleWithGemini } = require('../services/ai-service');
 const { getUserProfile, getUserRepos, prepareUserData } = require('../services/github-service');
 
+// Simple in-memory cache
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+const githubCache = {};
+
 // Battle two GitHub users
 router.post('/battle', async (req, res) => {
   try {
@@ -12,17 +16,34 @@ router.post('/battle', async (req, res) => {
       return res.status(400).json({ error: "Two usernames are required" });
     }
     
-    // Get profiles for both users
-    const [profile1, profile2] = await Promise.all([
-      getUserProfile(username1),
-      getUserProfile(username2)
-    ]);
-    
-    // Get repos for both users
-    const [repos1, repos2] = await Promise.all([
-      getUserRepos(username1),
-      getUserRepos(username2)
-    ]);
+    // Get profiles for both users (with cache)
+    let profile1, profile2, repos1, repos2;
+    let cached1 = githubCache[username1];
+    let cached2 = githubCache[username2];
+    if (cached1 && (Date.now() - cached1.timestamp < CACHE_TTL)) {
+      profile1 = cached1.profile;
+      repos1 = cached1.repos;
+    } else {
+      profile1 = await getUserProfile(username1);
+      repos1 = await getUserRepos(username1);
+      githubCache[username1] = {
+        profile: profile1,
+        repos: repos1,
+        timestamp: Date.now()
+      };
+    }
+    if (cached2 && (Date.now() - cached2.timestamp < CACHE_TTL)) {
+      profile2 = cached2.profile;
+      repos2 = cached2.repos;
+    } else {
+      profile2 = await getUserProfile(username2);
+      repos2 = await getUserRepos(username2);
+      githubCache[username2] = {
+        profile: profile2,
+        repos: repos2,
+        timestamp: Date.now()
+      };
+    }
     
     // Prepare data for each user
     const user1Data = prepareUserData(profile1, repos1);

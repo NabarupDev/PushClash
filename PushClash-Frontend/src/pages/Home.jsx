@@ -10,7 +10,7 @@ const Home = () => {
     // Ping the server to wake it up on page load
     const pingServer = async () => {
       try {
-        await fetch("https://pushclash.onrender.com/api/wake", {
+        await fetch("http://localhost:3000/api/wake", {
           method: "GET",
         });
         //console.log("Server pinged on page load");

@@ -58,7 +58,17 @@ async function generateBattleWithGemini(user1Data, user2Data) {
 async function generateRoastWithGemini(userData) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    
+
+    // If user not found, instruct Gemini to respond accordingly
+    if (userData.userNotFound) {
+      const prompt = `
+      We tried to fetch GitHub data for user "${userData.username}" but they do not exist on GitHub (404 error). Please roast us (the backend team) for failing to find the user, and let the requester know that the user does not exist, so you can't roast them. Be funny, self-deprecating, and include emojis.
+      `;
+      const result = await model.generateContent(prompt);
+      const response = result.response;
+      return response.text();
+    }
+
     const prompt = `
     You need to behave as a professional roaster reviewing a GitHub user.
     
@@ -182,7 +192,27 @@ async function generatePortfolioRoastWithGemini(url, scrapeData) {
 async function generateLeetcodeRoastWithGemini(leetcodeData) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    
+
+    // If API failed, instruct Gemini to respond accordingly
+    if (leetcodeData.apiError) {
+      const prompt = `
+      We tried to fetch LeetCode data for user "${leetcodeData.username}" but our backend failed to get the data due to an error on our side (external API failure). Please roast us (the backend team) for failing to get the data, and let the user know it's our fault, not theirs. Be funny, self-deprecating, and include emojis.
+      `;
+      const result = await model.generateContent(prompt);
+      const response = result.response;
+      return response.text();
+    }
+
+    // If user not found, instruct Gemini to respond accordingly
+    if (leetcodeData.userNotFound) {
+      const prompt = `
+      We tried to fetch LeetCode data for user "${leetcodeData.username}" but they do not exist on LeetCode. Please roast us (the backend team) for failing to find the user, and let the requester know that the user does not exist, so you can't roast them. Be funny, self-deprecating, and include emojis.
+      `;
+      const result = await model.generateContent(prompt);
+      const response = result.response;
+      return response.text();
+    }
+
     // Check if the data indicates user doesn't exist
     if (leetcodeData.errors && 
         leetcodeData.errors.some(err => err.message === "That user does not exist.") &&
@@ -229,7 +259,18 @@ async function generateLeetcodeRoastWithGemini(leetcodeData) {
 async function generateLeetcodeBattleWithGemini(user1Data, user2Data) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    
+
+    // If either API failed, instruct Gemini to respond accordingly
+    if (user1Data.apiError || user2Data.apiError) {
+      const failedUsers = [user1Data, user2Data].filter(u => u.apiError).map(u => u.username).join(' and ');
+      const prompt = `
+      We tried to fetch LeetCode data for user(s) "${failedUsers}" but our backend failed to get the data due to an error on our side (external API failure). Please roast us (the backend team) for failing to get the data, and let the users know it's our fault, not theirs. Be funny, self-deprecating, and include emojis.
+      `;
+      const result = await model.generateContent(prompt);
+      const response = result.response;
+      return response.text();
+    }
+
     // Check if either user doesn't exist
     if ((user1Data.errors && 
          user1Data.errors.some(err => err.message === "That user does not exist.") &&

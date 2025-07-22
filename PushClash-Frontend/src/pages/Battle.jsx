@@ -30,7 +30,7 @@ const Battle = () => {
 
         setIsLoading(true);
         try {
-            const apiBaseUrl = import.meta.env.PROFILE_IMAGE_API_BASE_URL || 'https://pushclash.onrender.com';
+            const apiBaseUrl = import.meta.env.PROFILE_IMAGE_API_BASE_URL || 'http://localhost:3000';
             const response = await fetch(`${apiBaseUrl}/github/profile-image/${username}`);
 
             if (response.ok) {
@@ -57,7 +57,7 @@ const Battle = () => {
         setBattleResults(null);
 
         try {
-            const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'https://pushclash.onrender.com';
+            const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'http://localhost:3000';
             
             const response = await fetch(`${apiBaseUrl}/api/battle`, {
                 method: 'POST',
@@ -171,6 +171,11 @@ const Battle = () => {
                                         onChange={(e) => handleUsernameChange(e.target.value, setUsername1)}
                                         placeholder="user1🦊"
                                         className="w-full bg-transparent outline-none text-white placeholder-gray-400 focus:placeholder-blue-300 transition-colors text-xs sm:text-sm md:text-base"
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                handleSubmit(e);
+                                            }
+                                        }}
                                     />
                                     {username1 && (
                                         <button 
@@ -199,6 +204,11 @@ const Battle = () => {
                                         onChange={(e) => handleUsernameChange(e.target.value, setUsername2)}
                                         placeholder="user2🦊"
                                         className="w-full bg-transparent outline-none text-white placeholder-gray-400 focus:placeholder-purple-300 transition-colors text-xs sm:text-sm md:text-base"
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                handleSubmit(e);
+                                            }
+                                        }}
                                     />
                                     {username2 && (
                                         <button 

@@ -43,7 +43,7 @@ const LeetCodeBattle = () => {
         setIsLoading2(true);
 
         try {
-            const apiBaseUrl = import.meta.env.VITE_ROAST_BASE_URL || 'https://pushclash.onrender.com';
+            const apiBaseUrl = import.meta.env.VITE_ROAST_BASE_URL || 'http://localhost:3000';
             
             const response = await fetch(`${apiBaseUrl}/api/leetcode-battle`, {
                 method: 'POST',
@@ -180,6 +180,12 @@ const LeetCodeBattle = () => {
                                         onChange={(e) => handleUsernameChange(e.target.value, setUsername1)}
                                         placeholder="user1"
                                         className="w-full bg-transparent outline-none text-white placeholder-gray-400 focus:placeholder-cyan-300 transition-colors text-xs sm:text-sm md:text-base"
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                startBattle();
+                                            }
+                                        }}
                                     />
                                     {username1 && (
                                         <button 
@@ -208,6 +214,12 @@ const LeetCodeBattle = () => {
                                         onChange={(e) => handleUsernameChange(e.target.value, setUsername2)}
                                         placeholder="user2"
                                         className="w-full bg-transparent outline-none text-white placeholder-gray-400 focus:placeholder-orange-300 transition-colors text-xs sm:text-sm md:text-base"
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                startBattle();
+                                            }
+                                        }}
                                     />
                                     {username2 && (
                                         <button 

@@ -27,7 +27,7 @@ const Roast = () => {
 
     setIsLoading(true);
     try {
-      const apiBaseUrl = import.meta.env.PROFILE_IMAGE_API_BASE_URL || 'https://pushclash.onrender.com';
+      const apiBaseUrl = import.meta.env.PROFILE_IMAGE_API_BASE_URL || 'http://localhost:3000';
       const response = await fetch(`${apiBaseUrl}/github/profile-image/${username}`);
 
       if (response.ok) {
@@ -54,7 +54,7 @@ const Roast = () => {
     setRoastResults(null);
 
     try {
-      const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'https://pushclash.onrender.com';
+      const apiBaseUrl = import.meta.env.ROAST_BASE_URL || 'http://localhost:3000';
       
       const response = await fetch(`${apiBaseUrl}/api/roast`, {
         method: 'POST',
@@ -121,35 +121,34 @@ const Roast = () => {
           </div>
         </div>
 
-        <div className="mb-6 sm:mb-8 max-w-md mx-auto">
-          <div className="relative">
-            <div className="absolute -top-2 left-2 sm:left-4 px-1 z-10 text-red-400 text-xs sm:text-sm font-medium bg-gray-900">
-              github
-            </div>
-            <div className="rounded-lg border-2 border-red-400 shadow-lg transition-all duration-300 hover:shadow-red-500/30">
-              <div className="flex items-center px-2 sm:px-4 py-2 sm:py-3">
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="username to roast 🦊"
-                  className="w-full bg-transparent outline-none text-white placeholder-gray-400 focus:placeholder-red-300 transition-colors text-xs sm:text-sm md:text-base"
-                />
-                {username && (
-                  <button 
-                    type="button" 
-                    onClick={() => setUsername('')}
-                    className="ml-1 sm:ml-2 text-gray-400 hover:text-red-400 transition-colors"
-                  >
-                    ✕
-                  </button>
-                )}
+        <form onSubmit={handleSubmit} className="flex flex-col items-center">
+          <div className="mb-6 sm:mb-8 max-w-md mx-auto w-full">
+            <div className="relative">
+              <div className="absolute -top-2 left-2 sm:left-4 px-1 z-10 text-red-400 text-xs sm:text-sm font-medium bg-gray-900">
+                github
+              </div>
+              <div className="rounded-lg border-2 border-red-400 shadow-lg transition-all duration-300 hover:shadow-red-500/30">
+                <div className="flex items-center px-2 sm:px-4 py-2 sm:py-3">
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="username to roast 🦊"
+                    className="w-full bg-transparent outline-none text-white placeholder-gray-400 focus:placeholder-red-300 transition-colors text-xs sm:text-sm md:text-base"
+                  />
+                  {username && (
+                    <button 
+                      type="button" 
+                      onClick={() => setUsername('')}
+                      className="ml-1 sm:ml-2 text-gray-400 hover:text-red-400 transition-colors"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex justify-center">
           <button
             type="submit"
             disabled={isRoasting}

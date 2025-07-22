@@ -8,27 +8,69 @@ const {
 } = require('../services/ai-service');
 const { getUserProfile, getUserRepos, prepareUserData } = require('../services/github-service');
 
+// Simple in-memory cache
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+const githubCache = {};
+const leetcodeCache = {};
+
 // Roast a single GitHub user
 router.post('/roast', async (req, res) => {
   try {
     const { username } = req.body;
-    
+
     if (!username) {
       return res.status(400).json({ error: "Username is required" });
     }
-    
-    // Get profile for user
-    const profile = await getUserProfile(username);
-    
-    // Get repos for user
-    const repos = await getUserRepos(username);
-    
+
+    // Check cache
+    let cached = githubCache[username];
+    let profile, repos;
+    let userNotFound = false;
+    if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+      profile = cached.profile;
+      repos = cached.repos;
+    } else {
+      try {
+        // Get profile for user
+        profile = await getUserProfile(username);
+        // Get repos for user
+        repos = await getUserRepos(username);
+        // Update cache
+        githubCache[username] = {
+          profile,
+          repos,
+          timestamp: Date.now()
+        };
+      } catch (err) {
+        // If error is 404, user does not exist
+        if (err.response && err.response.status === 404) {
+          userNotFound = true;
+        } else {
+          throw err;
+        }
+      }
+    }
+
+    let roastResult;
+    if (userNotFound) {
+      // Send a special prompt to Gemini if user not found
+      roastResult = await generateRoastWithGemini({ username, userNotFound: true });
+      return res.json({
+        user: {
+          username: username,
+          avatarUrl: null,
+          name: username
+        },
+        roastResult
+      });
+    }
+
     // Prepare data for user
     const userData = prepareUserData(profile, repos);
-    
+
     // Generate roast using Gemini
-    const roastResult = await generateRoastWithGemini(userData);
-    
+    roastResult = await generateRoastWithGemini(userData);
+
     res.json({
       user: {
         username: username,
@@ -37,7 +79,7 @@ router.post('/roast', async (req, res) => {
       },
       roastResult
     });
-    
+
   } catch (error) {
     console.error('Roast error:', error);
     res.status(500).json({ 
@@ -56,24 +98,50 @@ router.post('/leetcode-roast', async (req, res) => {
       return res.status(400).json({ error: "Username is required" });
     }
     
-    // Fetch LeetCode user data from the provided API
-    const leetcodeResponse = await axios.get(`https://leetcode-api-faisalshohag.vercel.app/${username}`);
-    
-    if (!leetcodeResponse.data) {
-      return res.status(404).json({ error: "LeetCode API is unavailable" });
+    // Check cache
+    let cached = leetcodeCache[username];
+    let leetcodeData;
+    let apiFailed = false;
+    let userNotFound = false;
+    if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+      leetcodeData = cached.data;
+    } else {
+      try {
+        const leetcodeResponse = await axios.get(`https://leetcode-api-faisalshohag.vercel.app/${username}`);
+        if (!leetcodeResponse.data) {
+          apiFailed = true;
+        } else if (leetcodeResponse.data.errors &&
+            leetcodeResponse.data.errors.some(err => err.message === "That user does not exist.") &&
+            leetcodeResponse.data.data.matchedUser === null) {
+          userNotFound = true;
+        } else {
+          leetcodeData = leetcodeResponse.data;
+          leetcodeData.username = username;
+          leetcodeCache[username] = {
+            data: leetcodeData,
+            timestamp: Date.now()
+          };
+        }
+      } catch (err) {
+        apiFailed = true;
+      }
     }
-    
-    // Check if the response contains errors indicating the user doesn't exist
-    if (leetcodeResponse.data.errors && 
-        leetcodeResponse.data.errors.some(err => err.message === "That user does not exist.") &&
-        leetcodeResponse.data.data.matchedUser === null) {
-      return res.status(404).json({ error: "LeetCode user not found" });
+
+    // If API failed, send a special message to Gemini
+    if (apiFailed) {
+      leetcodeData = {
+        username,
+        apiError: true
+      };
     }
-    
-    const leetcodeData = leetcodeResponse.data;
-    
-    // Add username to the data for reference in the prompt
-    leetcodeData.username = username;
+
+    // If user not found, send a special message to Gemini
+    if (userNotFound) {
+      leetcodeData = {
+        username,
+        userNotFound: true
+      };
+    }
     
     // Generate roast using Gemini
     const roastResult = await generateLeetcodeRoastWithGemini(leetcodeData);
@@ -81,7 +149,6 @@ router.post('/leetcode-roast', async (req, res) => {
     res.json({
       user: {
         username: username,
-        // Use the LeetCode avatar if available, or a placeholder
         avatarUrl: leetcodeData.avatar || `https://ui-avatars.com/api/?name=${username}&background=random`,
         name: leetcodeData.name || username
       },
@@ -115,32 +182,53 @@ router.post('/leetcode-battle', async (req, res) => {
       return res.status(400).json({ error: "Two usernames are required" });
     }
     
-    // Fetch LeetCode data for both users
-    const [leetcode1Response, leetcode2Response] = await Promise.all([
-      axios.get(`https://leetcode-api-faisalshohag.vercel.app/${username1}`),
-      axios.get(`https://leetcode-api-faisalshohag.vercel.app/${username2}`)
-    ]);
-    
-    // Check if the response for user1 indicates the user doesn't exist
-    if (leetcode1Response.data.errors && 
-        leetcode1Response.data.errors.some(err => err.message === "That user does not exist.") &&
-        leetcode1Response.data.data.matchedUser === null) {
-      return res.status(404).json({ error: `LeetCode user ${username1} not found` });
+    // Check cache for both users
+    let user1Data, user2Data;
+    let apiFailed1 = false, apiFailed2 = false;
+    let cached1 = leetcodeCache[username1];
+    let cached2 = leetcodeCache[username2];
+    if (cached1 && (Date.now() - cached1.timestamp < CACHE_TTL)) {
+      user1Data = cached1.data;
+    } else {
+      try {
+        const leetcode1Response = await axios.get(`https://leetcode-api-faisalshohag.vercel.app/${username1}`);
+        if (leetcode1Response.data.errors &&
+            leetcode1Response.data.errors.some(err => err.message === "That user does not exist.") &&
+            leetcode1Response.data.data.matchedUser === null) {
+          return res.status(404).json({ error: `LeetCode user ${username1} not found` });
+        }
+        user1Data = leetcode1Response.data;
+        user1Data.username = username1;
+        leetcodeCache[username1] = {
+          data: user1Data,
+          timestamp: Date.now()
+        };
+      } catch (err) {
+        apiFailed1 = true;
+        user1Data = { username: username1, apiError: true };
+      }
     }
-    
-    // Check if the response for user2 indicates the user doesn't exist
-    if (leetcode2Response.data.errors && 
-        leetcode2Response.data.errors.some(err => err.message === "That user does not exist.") &&
-        leetcode2Response.data.data.matchedUser === null) {
-      return res.status(404).json({ error: `LeetCode user ${username2} not found` });
+    if (cached2 && (Date.now() - cached2.timestamp < CACHE_TTL)) {
+      user2Data = cached2.data;
+    } else {
+      try {
+        const leetcode2Response = await axios.get(`https://leetcode-api-faisalshohag.vercel.app/${username2}`);
+        if (leetcode2Response.data.errors &&
+            leetcode2Response.data.errors.some(err => err.message === "That user does not exist.") &&
+            leetcode2Response.data.data.matchedUser === null) {
+          return res.status(404).json({ error: `LeetCode user ${username2} not found` });
+        }
+        user2Data = leetcode2Response.data;
+        user2Data.username = username2;
+        leetcodeCache[username2] = {
+          data: user2Data,
+          timestamp: Date.now()
+        };
+      } catch (err) {
+        apiFailed2 = true;
+        user2Data = { username: username2, apiError: true };
+      }
     }
-    
-    const user1Data = leetcode1Response.data;
-    const user2Data = leetcode2Response.data;
-    
-    // Add usernames to the data for reference in the prompt
-    user1Data.username = username1;
-    user2Data.username = username2;
     
     // Generate battle results using Gemini
     const battleResults = await generateLeetcodeBattleWithGemini(user1Data, user2Data);

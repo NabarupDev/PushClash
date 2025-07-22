@@ -8,6 +8,10 @@ const {
   getRepoReadme
 } = require('../services/github-service');
 
+// Simple in-memory cache
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+const githubCache = {};
+
 // Get user profile image
 router.get('/profile-image/:username', async (req, res) => {
   try {
@@ -28,9 +32,21 @@ router.get('/profile-image/:username', async (req, res) => {
 router.get('/user/:username', async (req, res) => {
   try {
     const { username } = req.params;
-    
-    const profile = await getUserProfile(username);
-    const repos = await getUserRepos(username);
+    // Check cache
+    let cached = githubCache[username];
+    let profile, repos;
+    if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+      profile = cached.profile;
+      repos = cached.repos;
+    } else {
+      profile = await getUserProfile(username);
+      repos = await getUserRepos(username);
+      githubCache[username] = {
+        profile,
+        repos,
+        timestamp: Date.now()
+      };
+    }
     const profileImage = profile.avatar_url;
     
     const repoDetails = [];
