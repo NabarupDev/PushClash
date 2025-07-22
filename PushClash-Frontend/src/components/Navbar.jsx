@@ -91,20 +91,20 @@ const Navbar = () => {
                   >
                     <div className="py-1">
                       <NavLink 
-                        to="/battle" 
-                        className={({ isActive }) => 
-                          isActive ? "text-white block px-4 py-2 text-sm font-medium" : "text-gray-300 hover:bg-gray-600 hover:text-white block px-4 py-2 text-sm font-medium"
-                        }
-                      >
-                        Github Battle
-                      </NavLink>
-                      <NavLink 
                         to="/roast" 
                         className={({ isActive }) => 
                           isActive ? "text-white block px-4 py-2 text-sm font-medium" : "text-gray-300 hover:bg-gray-600 hover:text-white block px-4 py-2 text-sm font-medium"
                         }
                       >
                         Github Roast
+                      </NavLink>
+                      <NavLink 
+                        to="/battle" 
+                        className={({ isActive }) => 
+                          isActive ? "text-white block px-4 py-2 text-sm font-medium" : "text-gray-300 hover:bg-gray-600 hover:text-white block px-4 py-2 text-sm font-medium"
+                        }
+                      >
+                        Github Battle
                       </NavLink>
                     </div>
                   </div>
@@ -128,12 +128,12 @@ const Navbar = () => {
                   >
                     <div className="py-1">
                       <NavLink 
-                        to="/leetcode" 
+                        to="/leetcode-roast" 
                         className={({ isActive }) => 
                           isActive ? "text-white block px-4 py-2 text-sm font-medium" : "text-gray-300 hover:bg-gray-600 hover:text-white block px-4 py-2 text-sm font-medium"
                         }
                       >
-                        LeetCode
+                        LeetCode Roast
                       </NavLink>
                       <NavLink 
                         to="/leetcode-battle" 
@@ -204,15 +204,6 @@ const Navbar = () => {
               </button>
               <div className={`pl-4 ${githubDropdown ? 'block' : 'hidden'} space-y-1 pt-1`}>
                 <NavLink 
-                  to="/battle"
-                  onClick={toggleMenu} 
-                  className={({ isActive }) => 
-                    isActive ? "text-white block px-3 py-2 rounded-md textbase font-medium" : "text-gray-300 hover:text-white block px-3 py-2 rounded-md textbase font-medium"
-                  }
-                >
-                  Github Battle
-                </NavLink>
-                <NavLink 
                   to="/roast"
                   onClick={toggleMenu} 
                   className={({ isActive }) => 
@@ -220,6 +211,15 @@ const Navbar = () => {
                   }
                 >
                   Github Roast
+                </NavLink>
+                <NavLink 
+                  to="/battle"
+                  onClick={toggleMenu} 
+                  className={({ isActive }) => 
+                    isActive ? "text-white block px-3 py-2 rounded-md textbase font-medium" : "text-gray-300 hover:text-white block px-3 py-2 rounded-md textbase font-medium"
+                  }
+                >
+                  Github Battle
                 </NavLink>
               </div>
             </div>
@@ -237,13 +237,13 @@ const Navbar = () => {
               </button>
               <div className={`pl-4 ${leetcodeDropdown ? 'block' : 'hidden'} space-y-1 pt-1`}>
                 <NavLink 
-                  to="/leetcode"
+                  to="/leetcode-roast"
                   onClick={toggleMenu} 
                   className={({ isActive }) => 
                     isActive ? "text-white block px-3 py-2 rounded-md textbase font-medium" : "text-gray-300 hover:text-white block px-3 py-2 rounded-md textbase font-medium"
                   }
                 >
-                  LeetCode
+                  LeetCode Roast
                 </NavLink>
                 <NavLink 
                   to="/leetcode-battle"
