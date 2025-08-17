@@ -34,7 +34,7 @@ const LeetCode = () => {
     try {
       const apiBaseUrl = import.meta.env.VITE_ROAST_BASE_URL || 'http://localhost:3000';
       
-      console.log('Using API URL:', apiBaseUrl); // For debugging
+      //console.log('Using API URL:', apiBaseUrl); // For debugging
       
       const response = await fetch(`${apiBaseUrl}/api/leetcode-roast`, {
         method: 'POST',
@@ -51,7 +51,7 @@ const LeetCode = () => {
       }
 
       const data = await response.json();
-      console.log('Roast response:', data); // For debugging
+      //console.log('Roast response:', data); // For debugging
       setRoastResults(data);
       
       if (data.user && data.user.avatarUrl) {
