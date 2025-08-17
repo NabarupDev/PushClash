@@ -124,7 +124,7 @@ PushClash follows a client-server architecture:
 ### Frontend Setup
 ```bash
 # Navigate to frontend directory
-cd PushClash-Frontend
+cd Frontend
 
 # Install dependencies
 npm install
@@ -140,7 +140,7 @@ npm run dev
 ### Backend Setup
 ```bash
 # Navigate to backend directory
-cd PushClash-Backend
+cd Backend
 
 # Install dependencies
 npm install
@@ -160,7 +160,7 @@ npm run dev
 
 ```
 PushClash/
-├── PushClash-Frontend/     # React frontend application
+├── Frontend/     # React frontend application
 │   ├── public/                # Static assets
 │   ├── src/                   # Source files
 │   │   ├── assets/           # Images and static resources
@@ -179,7 +179,7 @@ PushClash/
 │   ├── package.json          # Frontend dependencies
 │   └── tailwind.config.js    # Tailwind CSS configuration
 │
-├── PushClash-Backend/      # Node.js backend application
+├── Backend/      # Node.js backend application
 │   ├── routes/                # API route definitions
 │   │   ├── battle.js         # Battle endpoints
 │   │   ├── github.js         # GitHub API endpoints
